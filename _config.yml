@@ -149,7 +149,7 @@ header_pages:
   - about.html
   - archives.html
   - categories.html
-# - tags.html
+  - tags.html 
 
 # Page default value
 defaults:
@@ -157,6 +157,9 @@ defaults:
     heading: "연이 날다"
     subheading: ":airplane:이륙중"
     banner: "/assets/images/banners/sky.jpg"
+
+# categories
+category_list: [ etc ]
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
