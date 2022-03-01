@@ -155,11 +155,11 @@ header_pages:
 defaults:
   home:
     heading: "연이 날다"
-    subheading: ":airplane:이륙중"
+    subheading: "✈️이륙중"
     banner: "/assets/images/banners/sky.jpg"
 
 # categories
-category_list: [ etc ]
+categories: [ etc, Algorithm ]
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
