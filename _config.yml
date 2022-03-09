@@ -149,7 +149,7 @@ header_pages:
   - about.html
   - archives.html
   - categories.html
-  - tags.html 
+  - tags.html
 
 # Page default value
 defaults:
@@ -159,7 +159,7 @@ defaults:
     banner: "/assets/images/banners/sky.jpg"
 
 # categories
-categories: [ etc, Algorithm ]
+categories: [etc, Algorithm, HTML/CSS]
 
 # 추가
 futrue: true
