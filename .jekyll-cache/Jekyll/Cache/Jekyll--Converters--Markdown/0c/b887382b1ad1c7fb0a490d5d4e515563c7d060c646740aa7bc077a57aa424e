@@ -1,4 +1,4 @@
-I"�'<h1 id="chapter3-프로세스">Chapter3. 프로세스</h1>
+I"�'<h2 id="chapter3-프로세스">Chapter3. 프로세스</h2>
 
 <h2 id="context-프로세스의-문맥">Context 프로세스의 문맥</h2>
 
@@ -28,40 +28,35 @@
 
 <p><img src="/assets/images/posts/os/03-17-3-a.png" alt="프로세스1" /></p>
 
-<p><code class="language-plaintext highlighter-rouge">운영체제의 커널 주소공간에 각 프로세스의 PCB를 저장하고 있음</code></p>
-
-<p><code class="language-plaintext highlighter-rouge">항상 프로세스의 문맥을 파악하고 있다가, CPU가 다시 그 프로세스를 점유했을 때, 그 시점부터 실행</code></p>
+<p style="color:#ff5100">운영체제의 커널 주소공간에 각 프로세스의 PCB를 저장하고 있음</p>
+<p style="color:#ff5100">항상 프로세스의 문맥을 파악하고 있다가, CPU가 다시 그 프로세스를 점유했을 때, 그 시점부터 실행</p>
 
 <h3 id="프로세스의-상태">프로세스의 상태</h3>
 
-<p>Running - CPU를 잡고 instruction을 수행중인 상태</p>
+<p><strong>Running</strong> - CPU를 잡고 instruction을 수행중인 상태</p>
 
-<p>Ready - CPU를 기다리는 상태(필요한 부분은 메모리에 올라가 있음)</p>
+<p><strong>Ready</strong> - CPU를 기다리는 상태(필요한 부분은 메모리에 올라가 있음)</p>
 
-<p>Blocked( wati, sleep)</p>
+<p><strong>Blocked</strong>( wati, sleep)</p>
 
 <ul>
-  <li>
-    <p>CPU를 주어도 당장 instruction을 수행 할 수 없는 상태</p>
-  </li>
-  <li>
-    <p>Process 자신이 요청한 event 가 즉시 만족되지 않아 이를 기다리는 상태</p>
-  </li>
+  <li>CPU를 주어도 당장 instruction을 수행 할 수 없는 상태</li>
+  <li>Process 자신이 요청한 event 가 즉시 만족되지 않아 이를 기다리는 상태</li>
 </ul>
 
-<p>New : 프로세스가 생성중인 상태</p>
-
-<p>Terminated : 수행이 끝난 상태</p>
+<p>New : 프로세스가 생성중인 상태  <br />
+Terminated : 수행이 끝난 상태</p>
 
 <p><img src="/assets/images/posts/os/03-17-3-b.png" alt="프로세스2" /></p>
 
-<p><code class="language-plaintext highlighter-rouge">Running -(Event) → Blocked (waiting) - (event complete)→ Ready → Running</code></p>
+<div style="text-align:center">
+<span style="color:#ff5100">Running -(Event) → Blocked (waiting) - (event complete)→ Ready → Running</span>
+</div>
+<p><br /></p>
 
-<p><strong>Suspended (stopped )</strong></p>
-
-<p>외부에서 해당 프로세스를 정지한 상태.</p>
-
-<p>프로세스를 통째로 <code class="language-plaintext highlighter-rouge">swap out</code> 된다.</p>
+<p><strong>Suspended ( Stopped )</strong>  <br />
+외부에서 해당 프로세스를 정지한 상태.  <br />
+프로세스를 통째로 <code class="language-plaintext highlighter-rouge">swap out</code> 된다.</p>
 
 <p>⭐ blocked 와의 차이점</p>
 
