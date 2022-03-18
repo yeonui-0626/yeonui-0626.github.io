@@ -1,5 +1,4 @@
-I"
-,<h2 id="헷갈리는-css-속성-정리">헷갈리는 css 속성 정리</h2>
+I"L*<h2 id="헷갈리는-css-속성-정리">헷갈리는 css 속성 정리</h2>
 
 <p>프론트를 구현 할때마다, 페이지 layout은 어떻게 해야하는지,<br />
 어떤 속성을 주어야 수평 정렬이 되는지, 왜 이 속성을 써야 이 element가 여기 위치하게 되는지에 대한<br />
@@ -87,8 +86,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>(참고블로그)<br />
-<a href="https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions">https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions</a></p>
+<p><a href="https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions">참고블로그</a></p>
 
 <h3 id="display">display</h3>
 
@@ -106,10 +104,9 @@ width, height 지정 가능</li>
   <li><code class="language-plaintext highlighter-rouge">none</code> : 영역을 아예 차지하지 않는다.</li>
 </ul>
 
-<p>(참고블로그)<br />
-<a href="https://ofcourse.kr/css-course/display-%EC%86%8D%EC%84%B1">https://ofcourse.kr/css-course/display-속성</a><br />
-<a href="https://studiomeal.com/archives/197">https://studiomeal.com/archives/197</a> → 진심 정리 잘 되있음<br />
-<a href="https://heropy.blog/2018/11/24/css-flexible-box/">https://heropy.blog/2018/11/24/css-flexible-box/</a></p>
+<p><a href="https://ofcourse.kr/css-course/display-%EC%86%8D%EC%84%B1">참고블로그1</a><br />
+<a href="https://studiomeal.com/archives/197">참고블로그2</a> → 진심 정리 잘 되있음<br />
+<a href="https://heropy.blog/2018/11/24/css-flexible-box/">참고블로그3</a></p>
 
 <h3 id="수평-구성-방법">수평 구성 방법</h3>
 
@@ -139,8 +136,7 @@ width, height 지정 가능</li>
   <li>block요소는 설정시에도 내용물 크기에 맞춰 자동 조정되지 않는다.</li>
 </ul>
 
-<p>(참고블로그)<br />
-<a href="https://oursmalljoy.com/css-width-auto-height-auto-%EA%B8%B0%EB%B3%B8%EA%B0%9C%EB%85%90-%EC%9E%98%EB%AA%BB-%EC%83%9D%EA%B0%81%ED%95%98%EA%B3%A0-%EC%9E%88%EB%8A%94-%EA%B2%83%EB%93%A4/">https://oursmalljoy.com/css-width-auto-height-auto-기본개념-잘못-생각하고-있는-것들/</a></p>
+<p><a href="https://oursmalljoy.com/css-width-auto-height-auto-%EA%B8%B0%EB%B3%B8%EA%B0%9C%EB%85%90-%EC%9E%98%EB%AA%BB-%EC%83%9D%EA%B0%81%ED%95%98%EA%B3%A0-%EC%9E%88%EB%8A%94-%EA%B2%83%EB%93%A4/">참고블로그</a></p>
 
 <p><em>width + padding + border = actual width of an element</em><br />
 <em>height + padding + border = actual height of an element</em></p>
@@ -171,9 +167,8 @@ width, height 지정 가능</li>
 부모의 height 가 설정되어야한다.</li>
 </ul>
 
-<p>(참고블로그)<br />
-<a href="https://deeplify.dev/front-end/markup/position-sticky">https://deeplify.dev/front-end/markup/position-sticky</a>
-<a href="https://developer.mozilla.org/ko/docs/Web/CSS/position">https://developer.mozilla.org/ko/docs/Web/CSS/position</a></p>
+<p><a href="https://deeplify.dev/front-end/markup/position-sticky">참고블로그1</a>
+<a href="https://developer.mozilla.org/ko/docs/Web/CSS/position">참고블로그2</a></p>
 
 <h3 id="calc">calc()</h3>
 
@@ -208,6 +203,5 @@ width, height 지정 가능</li>
 <p>비율은 글자 크기 기준으로.<br />
 ⇒ 글자 크기 보다 높게 지정하여 위아래 여백이 일정하게 생기는 효과.</p>
 
-<p>(참고블로그)<br />
-<a href="https://www.codingfactory.net/10639">https://www.codingfactory.net/10639</a></p>
+<p><a href="https://www.codingfactory.net/10639">참고블로그</a></p>
 :ET
