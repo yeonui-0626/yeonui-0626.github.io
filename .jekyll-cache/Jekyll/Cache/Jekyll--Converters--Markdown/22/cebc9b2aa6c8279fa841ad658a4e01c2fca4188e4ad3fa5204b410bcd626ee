@@ -1,0 +1,236 @@
+I"DA<h2 id="jdbc란">JDBC란</h2>
+
+<p>Java Database Connectivity</p>
+
+<ul>
+  <li>자바에서 데이터베이스를 사용하기 위해 관계형 데이터베이스에 접속하고 SQL문을 수행할 수 있는 표준 인터페이스</li>
+</ul>
+
+<h2 id="dbms">DBMS</h2>
+
+<ul>
+  <li>Database Management System</li>
+  <li>DBMS는 데이터를 운영, 관리하는 소프트웨어이다.</li>
+  <li>응용 프로그램 설치를 통해 사용할 수 있다.</li>
+  <li>현재는 RDBMS(관계형 데이터베이스)가 많이 사용된다.</li>
+  <li>종류
+    <ul>
+      <li><a href="https://dev.mysql.com/downloads/mysql/">MySQL</a></li>
+      <li><a href="https://www.oracle.com/kr/database/technologies/oracle-database-software-downloads.html#19c">Oracle</a></li>
+      <li><a href="https://mariadb.org/">MariaDB</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="jdbc-api">JDBC API</h2>
+
+<ul>
+  <li>JDBC API는 JDK에 포함되어있어 따로 설치하지 않아도 되고 DBMS에 상관없이 사용할 수 있다.</li>
+  <li><code class="language-plaintext highlighter-rouge">java.sql</code> 패키지에 구현되어있다.</li>
+</ul>
+
+<h2 id="jdbc-드라이버">JDBC 드라이버</h2>
+
+<ul>
+  <li>JDBC 드라이버는 각 DBMS별 드라이버가 따로 존재하여 다운 받아야한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">.jar</code> 파일로 존재한다.</li>
+</ul>
+
+<hr />
+
+<h2 id="jdbc-사용하기-with-mysql">JDBC 사용하기 with MySQL</h2>
+
+<h3 id="0-db-연결-준비">0. DB 연결 준비</h3>
+
+<p>DB에 연결하기 위한 요소는 다음과 같다.</p>
+
+<ol>
+  <li>driver
+    <ul>
+      <li>로드할 JDBC 드라이버</li>
+      <li>드라이버 인터페이스를 구현한 클래스를 로딩하는 것이다.</li>
+      <li>각 DBMS 마다 존재.</li>
+    </ul>
+  </li>
+  <li>url
+    <ul>
+      <li>드라이버 매니저에게 Connection 객체를 달라고 요청할 주소</li>
+      <li>현재 로컬에 설치되어 있고 MySQL은 3306 포트를 사용하고 있음
+        <ul>
+          <li>jdbc:mysql://127.0.0.1:3306/[db이름]</li>
+          <li>serverTimezone=UTC : 서버 시간 설정</li>
+        </ul>
+      </li>
+      <li>각 DBMS마다  존재.</li>
+    </ul>
+  </li>
+  <li>계정 id
+    <ul>
+      <li>데이터베이스에 접속할 계정 id</li>
+    </ul>
+  </li>
+  <li>계정  password
+    <ul>
+      <li>데이터베이스에 접속할 계정의 password</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">driver</span> <span class="o">=</span> <span class="s">"com.mysql.cj.jdbc.Driver"</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s">"jdbc:mysql://127.0.0.1:3306/[db이름]?serverTimezone=UTC"</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">user</span> <span class="o">=</span> <span class="s">"[db id]"</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">pass</span> <span class="o">=</span> <span class="s">"[db password]"</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="1-jdbc-드라이버-로드">1. JDBC 드라이버 로드</h3>
+
+<p>Java에서 DBMS에 접근할 수 있도록 JDBC 드라이버를 로드한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">driver</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="2-db-서버-연결">2. DB 서버 연결</h3>
+
+<p>DB와 연결하는 Connection 객체를 생성한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.sql.*</span><span class="o">;</span>
+
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">pass</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="3-sql-문-작성">3. SQL 문 작성</h3>
+
+<p>수행할 쿼리문을 작성한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">"select id, title, content, no from board where id= ? "</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="4-connection-객체-생성-및-sql-전송">4. Connection 객체 생성 및 SQL 전송</h3>
+
+<p>statement/preparedStatement 객체는 데이터베이스로 SQL문 전송&amp;수행의 역할을 한다.</p>
+
+<p>(여기서는 preparedStatement 사용)</p>
+
+<p>preparedStatement 객체는 Connection 객체 생성시, SQL 문을 보내고 그 후 변수 값을 셋팅 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span> <span class="c1">// 객체 생성</span>
+<span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span> <span class="c1">// 변수 셋팅</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">pstmt.setString(1, id);</code></p>
+
+<ul>
+  <li>첫번째 매개변수는 몇번째 ?에 넣을 것인지를 뜻하고 그 자리에 두번째 매개변수를 넣는다.</li>
+</ul>
+
+<h3 id="5-sql문-실행">5. SQL문 실행</h3>
+
+<p>변수 셋팅이 완료되면 preparedStatement 가 제공하는 메서드를 통해 SQL문을 실행한다.</p>
+
+<p>수행할 쿼리에 따라 실행하는 preparedStatement의 메소드가 달라진다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">executeUpdate()</code>
+    <ul>
+      <li><strong>insert, update, delete 수행</strong></li>
+      <li>int 반환
+        <ul>
+          <li>처리된 레코드 수 반환</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">executeQuery()</code>
+    <ul>
+      <li><strong>select 수행</strong></li>
+      <li>ResultSet 객체 반환 (쿼리set)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>sql 문 수행 후, 결과에 따라 로직을 처리하면 된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">()){</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"id"</span><span class="o">));</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"title"</span><span class="o">));</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"content"</span><span class="o">));</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="s">"no"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="6-자원-해제">6. 자원 해제</h3>
+
+<p>만들었던 객체들의 자원을 해제 해준다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rs</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+<span class="n">pstmt</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+<span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>여기까지가 DB 연결부터 sql 문 수행, 자원 해제까지의 필수 과정이다.</p>
+
+<p>전체 코드는 다음과 같다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">driver</span> <span class="o">=</span> <span class="s">"com.mysql.cj.jdbc.Driver"</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s">"jdbc:mysql://127.0.0.1:3306/[db이름]?serverTimezone=UTC"</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">user</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">pass</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+
+	<span class="nc">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="nc">PreparedStatement</span> <span class="n">pstmt</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="nc">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+	<span class="k">try</span>
+	<span class="o">{</span>
+		<span class="nc">String</span> <span class="n">id</span> <span class="o">=</span> <span class="s">"selectid"</span><span class="o">;</span>
+		<span class="c1">// 1. 드라이버 로딩</span>
+		<span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">driver</span><span class="o">);</span>
+
+		<span class="c1">// 2. 연결</span>
+		<span class="n">conn</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">pass</span><span class="o">);</span>
+
+		<span class="c1">// 3. SQL 문 작성</span>
+		<span class="nc">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">"select id, title, content, no from board where id= ? "</span><span class="o">;</span>
+
+		<span class="c1">// 4. Connection 객체 생성 및 SQL 전송</span>
+		<span class="n">pstmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span> <span class="c1">// 객체 생성</span>
+		<span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span> <span class="c1">// 변수 셋팅</span>
+		<span class="n">rs</span> <span class="o">=</span> <span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+
+		<span class="c1">// 5. SQL문 실행</span>
+		<span class="k">while</span> <span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">())</span> <span class="o">{</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"id"</span><span class="o">));</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"title"</span><span class="o">));</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"content"</span><span class="o">));</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="s">"no"</span><span class="o">));</span>
+		<span class="o">}</span>
+	<span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">){</span>
+		<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+	<span class="o">}</span><span class="k">finally</span><span class="o">{</span>
+		<span class="c1">//6. 자원 해제</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">rs</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">pstmt</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">conn</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+
+<p>예외 처리가 필요하기 때문에 try-catch-finally 문을 사용한다.</p>
+
+<p>반드시 실행되는 finally를 통해 자원을 해제 한다.</p>
+:ET
