@@ -8,7 +8,7 @@ tags: [Java, WEB]
 
 
 
-# 정적 페이지와 동적 페이지
+## 정적 페이지와 동적 페이지
 
 HTML, css, javascript 만으로 각 사용자에게 맞는 동적 웹페이지를 구현하기에는 어려움이 있다.
 
@@ -24,7 +24,7 @@ HTML, css, javascript 만으로 각 사용자에게 맞는 동적 웹페이지�
 
 client가 요청을 하면 web server에서 그 요청에 대한 처리를 하고 요청에 대한 결과를 client에게 보내는 것이라고 할 수 있다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c1ae82c-f494-4624-bf49-dfbc72acee01/Untitled.png)
+![웹서버](/assets/images/posts/2022-03-23-web-1.png)
 
 정적인 웹 페이지는 사용자의 요청에 따라 서버에 이미 저장된 HTML 파일들만 불러오는 것이고,
 
@@ -32,9 +32,9 @@ client가 요청을 하면 web server에서 그 요청에 대한 처리를 하�
 
 동적인 웹 페이지에서 사용자의 요청을 처리하기 위해 Server는 어떻게 동작해야할까?
 
-일단 각 사용자에게 맞는 웹 페이지를 보여주기 위해서는 데이터베이스와 웹 애플리케이션 서버가 필요합니다.
+일단 각 사용자에게 맞는 웹 페이지를 보여주기 위해서는 데이터베이스와 웹 애플리케이션 서버가 필요하다.
 
-# 웹 서버면 웹 서버지, 웹 어플리케이션 서버?
+## 웹 서버면 웹 서버지, 웹 어플리케이션 서버?
 
 ## 웹 서버와 웹 어플리케이션 서버
 
@@ -54,12 +54,11 @@ client가 요청을 하면 web server에서 그 요청에 대한 처리를 하�
 - 종류
     - Apache, Nginx, IIS
 
-<aside>
-✔️ 웹 서버란?
-웹 브라우저 client로부터 HTTP 요청을 받고, 정적인 콘텐츠를 제공하는 프로그램.
-HTTP 프로토콜을 기반으로 client와 통신하고 client 의 요청을 서비스한다.
 
-</aside>
+✔️ <span style="color:#ff5100">**웹 서버란?**</span>    
+<span style="color:#ff5100">웹 브라우저 client로부터 HTTP 요청을 받고, 정적인 콘텐츠를 제공하는 프로그램.
+HTTP 프로토콜을 기반으로 client와 통신하고 client 의 요청을 서비스한다.</span>
+
 
 ### **웹 어플리케이션 서버(WAS)**
 
@@ -69,20 +68,20 @@ HTTP 프로토콜을 기반으로 client와 통신하고 client 의 요청을 �
     - 따라서 **WAS는 jsp, servlet 구동 환경을 제공**해준다.
         - Tomcat에서 Servlet관련 라이브러리를 제공하는 것을 알 수 있다.
         
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b9747acd-e35d-4a18-87e4-e6a72659ef8f/Untitled.png)
+        ![tomcat](/assets/images/posts/2022-03-23-web-2.png)
         
 - 대부분의 WAS는 정적인 콘텐츠도 제공할 수 있기 때문에 WAS는 웹서버를 포함하는 개념이라고 할 수 있다.
     
-    ❓ 그럼 WAS만 쓰면 되지 왜 웹서버를 쓸까? → [Web Server 와 WAS를 구분하는 이유](https://mi-nya.tistory.com/239)
-    
+    ❓ 그럼 WAS만 쓰면 되지 왜 웹서버를 쓸까? → [Web Server 와 WAS를 구분하는 이유](https://mi-nya.tistory.com/239)    
     1. WAS의 부하을 줄이기 위해서
         - 웹 서버에서 정적인 콘텐츠를 처리하고 웹 서버는 요청을 처리하기 위한 작업을 담당한다.
         - 정적 컨텐츠 처리를 웹 서버에 맡기므로써 WAS의 부하를 줄이고 수행기간을 줄인다.
     2. 물리적으로 분리하여 보안 강화 
+   
 - 종류
     - Tomcat, JEUS, JBoss
 
-# 웹 어플리케이션 서버와 서블릿
+## 웹 어플리케이션 서버와 서블릿
 
 ## 서블릿 컨테이너
 
@@ -117,11 +116,9 @@ HTTP 프로토콜을 기반으로 client와 통신하고 client 의 요청을 �
     3. 보안 관리는 배포 서술자라 불리는 `web.xml` 에 기록
 5. JSP 지원
 
-<aside>
-✔️ 자바는 오직 JVM만 해석할 수 있다.
-그래서 서블릿이 불려지면 JVM이 최종으로 그 요청을 수행한다.
+✔️ <span style="color:#ff5100">자바는 오직 JVM만 해석할 수 있다.</span>      
+<span style="color:#ff5100">그래서 서블릿이 불려지면 JVM이 최종으로 그 요청을 수행한다.</span>
 
-</aside>
 
 ## JVM의 역할
 
@@ -135,6 +132,16 @@ HTTP 프로토콜을 기반으로 client와 통신하고 client 의 요청을 �
 3. 컨테이너는 서블릿을 로드하고 init()을 통해 초기화한다.(init()은 처음 로드 되었을 때 한번만 호출)
 4. 컨테이너가 서블릿을 service() 를 호출하여 HTTP 요청 처리.
 5. 서블릿은 요청을 처리하고 응답을 넘겨줌
+
+
+
+<br/>
+<br/>
+
+---
+
+<br/>
+<br/>
 
 > **참고**
 > 
