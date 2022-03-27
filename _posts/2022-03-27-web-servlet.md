@@ -117,3 +117,23 @@ tags: [Java, WEB]
 ⭐ 여기서 주목해야할 점
 
 - 요청을 처리할 메소드 호출하는 작업을 개발자가 하는게 아니고  servlet을 관리하는 servlet container가 하고 있다는 것 !
+
+
+<br/>
+<br/>
+
+---
+
+<br/>
+<br/>
+
+> **참고 사이트**
+> 
+
+[서블릿 객체의 상속 구조](https://kgvovc.tistory.com/26)    
+[javaee 공식문서](https://javaee.github.io/javaee-spec/javadocs/index.html?javax/servlet/package-summary.html)    
+[Servlet 생명주기](https://victorydntmd.tistory.com/154)    
+[JSP와 Servlet이란 무엇인가?](https://morningcoding.tistory.com/entry/JSP%EC%99%80-Servlet%EC%9D%B4%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)      
+[[Web] web.xml 설정 내용, 역할 및 간단한 예시 이해하기](https://gmlwjd9405.github.io/2018/10/29/web-application-structure.html)    
+[[Web] Servlet이란](https://gmlwjd9405.github.io/2018/10/28/servlet.html)    
+[[Web] Servlet과 JSP의 차이와 관계](https://gmlwjd9405.github.io/2018/11/04/servlet-vs-jsp.html)    
