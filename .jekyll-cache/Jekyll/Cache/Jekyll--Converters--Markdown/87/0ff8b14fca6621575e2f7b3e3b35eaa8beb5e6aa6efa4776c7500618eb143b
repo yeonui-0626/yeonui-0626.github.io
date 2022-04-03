@@ -1,4 +1,4 @@
-I"|<h2 id="백준-4485-번-녹색-옷-입은-애가-젤다지">백준 4485 번 녹색 옷 입은 애가 젤다지?</h2>
+I"�<h2 id="백준-4485-번-녹색-옷-입은-애가-젤다지">백준 4485 번 녹색 옷 입은 애가 젤다지?</h2>
 
 <p><a href="https://www.acmicpc.net/problem/4485">문제보기</a></p>
 
@@ -54,11 +54,17 @@
 
 <h3 id="2-코드">2. 코드</h3>
 
-<script src="https://gist.github.com/yeonui-0626/4e43cefcc751710d080eae5e9a3da8a7.js"></script>
+<script src="https://gist.github.com/yeonui-0626/a3dab1a58cb670158129741ff79202e1.js"></script>
+
+<p><br />
+<br />
+——–
+<br />
+<br /></p>
 
 <blockquote>
   <p>참고
-<a href="https://sohee-dev.tistory.com/63">https://sohee-dev.tistory.com/63</a>
+<a href="https://sohee-dev.tistory.com/63">https://sohee-dev.tistory.com/63</a>   <br />
 <a href="https://m.blog.naver.com/ndb796/221234424646">https://m.blog.naver.com/ndb796/221234424646</a></p>
 </blockquote>
 :ET

@@ -1,4 +1,4 @@
-I"U@<h2 id="chapter5-cpu-scheduling">Chapter5. CPU Scheduling</h2>
+I"7A<h2 id="chapter5-cpu-scheduling">Chapter5. CPU Scheduling</h2>
 
 <h3 id="cpui-o-버스트-사이클">CPU/I-O 버스트 사이클</h3>
 
@@ -507,4 +507,17 @@ n X quantum 만큼의 시간 후에 모든 프로세스가 먼저 종료된다.<
     </ul>
   </li>
 </ul>
+
+<p><br />
+<br /></p>
+
+<hr />
+
+<p><br />
+<br /></p>
+
+<blockquote>
+  <p>참고 <br />
+<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">KOCW 이화여자대학교 2014 반효경 교수님</a></p>
+</blockquote>
 :ET
