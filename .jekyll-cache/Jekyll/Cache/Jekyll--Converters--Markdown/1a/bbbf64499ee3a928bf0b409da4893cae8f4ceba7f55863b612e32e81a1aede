@@ -1,0 +1,76 @@
+I"<h2 id="백준-15961-번-회전초밥">백준 15961 번 회전초밥</h2>
+
+<p><a href="https://www.acmicpc.net/problem/15961">문제보기</a></p>
+
+<h3 id="1-문제-풀이">1. 문제 풀이</h3>
+
+<ul>
+  <li>회전초밥 위에 N 개의 접시가 있다.
+    <ul>
+      <li>2 ≤ N ≤ 3,000,000</li>
+    </ul>
+  </li>
+  <li>연속된 k 개의 초밥을 먹어야한다.
+    <ul>
+      <li>2 ≤ k ≤ 3,000 (k ≤ N)</li>
+    </ul>
+  </li>
+  <li>회전 초밥 위의 초밥의 가짓 수는 d이다.
+    <ul>
+      <li>2 ≤ d ≤ 3,000</li>
+    </ul>
+  </li>
+  <li>쿠폰으로 c 의 초밥을 공짜로 먹을 수 있다.</li>
+</ul>
+
+<p><strong>쿠폰으로 먹을 수 있는 초밥을 포함하여 초밥을 먹을 수 있는 가짓수의 최대를 구하는 문제</strong></p>
+
+<h3 id="2-시행착오">2. 시행착오</h3>
+<ul>
+  <li>시간 초과
+    <ul>
+      <li>일단 입력으로 들어오는 접시 수 N 이 최대 3백만이다. 여기서 아 그냥 배열을 하나씩 확인하면 무조건 시간초고에 걸리겠구나 예상했지만, 별다른 방법이 생각나지 않아 for문을 돌리며, hashset에 저장하는 방식으로 가짓수를 구했다. <strong>=&gt; 역시나 시간초과 !</strong></li>
+    </ul>
+  </li>
+  <li>슬라이이딩 윈도우
+    <ul>
+      <li>시간 초과를 해결하기 위해 슬라이딩 윈도우를 사용했다.</li>
+      <li>슬라이딩 윈도우를 사용하면 앞과 뒤의 원소에 대해서만 처리해주면 된다.</li>
+      <li>슬라이딩 윈도우를 사용하기 위해서 초밥 종류 별 갯수를 카운팅하기 위한 배열을 만들었다.
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">cntList = new int[d+1]</code></li>
+          <li>초밥 종류의 번호를 그대로 인덱스로 사용하기 위해 배열의 크기는 d+1 로 선언한다.</li>
+        </ul>
+      </li>
+      <li>i번째 초밥을 먹는다면, <strong>cntList의 i번째 초밥의 번호(<code class="language-plaintext highlighter-rouge">cntList(arr[i])</code>) 인덱스에 <code class="language-plaintext highlighter-rouge">+1</code></strong>을 하여 해당 번호 초밥을 먹었음을 표시한다.</li>
+      <li>이 때, 맨처음 넣었던(지금 i번째(<code class="language-plaintext highlighter-rouge">arr[i]</code>)를 보고 있다면 <code class="language-plaintext highlighter-rouge">arr[i-k]</code>의 값) 초밥은 -1를 해주어 제외시켜준다.</li>
+    </ul>
+  </li>
+  <li>방문표시
+    <ul>
+      <li>위와 같이 슬라이딩 윈도우로 구현했음에도 불구하고 시간초과가 떴다…..</li>
+      <li>문제는 가짓수를 카운트 하기 위해 cntList를 처음부터 끝까지 보는 for문을 작성했기 때문이다.
+        <ul>
+          <li>최악의 경우-&gt; N=3,000,000, K=3,000 이라면 
+for문을 90억번 돌게된다 ….</li>
+        </ul>
+      </li>
+      <li>이 부분은 방문표시할 배열을 선언하여 해결했다.
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">eat = new boolean[d+1]</code></li>
+        </ul>
+      </li>
+      <li>초밥을 먹을때는 true로,</li>
+      <li>처음 초밥을 제외할 때, 갯수가 0이 되면 false로.</li>
+      <li>그리고 쿠폰으로 먹을 수 있는 c 에 대한 처리도 꼭해주어야한다 !</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>슬라이딩 윈도우</strong> 꼭 기억하기 !</p>
+
+<h3 id="3-코드">3. 코드</h3>
+
+<script src="https://gist.github.com/yeonui-0626/b22ac69d6b23888e118d2de85f5cf90d.js"></script>
+
+:ET
