@@ -1,4 +1,4 @@
-I"�<h2 id="백준-4485-번-녹색-옷-입은-애가-젤다지">백준 4485 번 녹색 옷 입은 애가 젤다지?</h2>
+I"(<h2 id="백준-4485-번-녹색-옷-입은-애가-젤다지">백준 4485 번 녹색 옷 입은 애가 젤다지?</h2>
 
 <p><a href="https://www.acmicpc.net/problem/4485">문제보기</a></p>
 
@@ -18,10 +18,10 @@
 <h3 id="풀이">풀이</h3>
 
 <p>각 칸까지의 최소 비용을 저장할 2차원 배열(<code class="language-plaintext highlighter-rouge">distances[][]</code>)이 필요하고   <br />
-최소 비용이 저장된, 이동할 칸들을 저장할 우선 순위 큐가 필요한,,,,줄 알았는데 이 문제에서는 필요어도 통과가 된다.    <br />
-우선 순위 큐를 사용해도 어차피 모든, 최소비용이 업데이트된 칸을 다 탐색해야한다.    <br />
-( -&gt; 쓰나마나라는 말 )   <br />
-그래서 그냥 큐만 있으면 된다 !</p>
+최소 비용이 저장된, 이동할 칸들을 저장할 우선 순위 큐가 필요하다. (이 문제에서는 그냥 queue로 풀어도 통과가 된다.)</p>
+<ul>
+  <li>우선 순위 큐를 쓰게되면 최적화 가능!</li>
+</ul>
 
 <ol>
   <li>칸을 선택한다. ( 현재칸까지의 최소 비용이 <code class="language-plaintext highlighter-rouge">distance</code>에 저장되어 있다. )</li>
@@ -63,7 +63,7 @@
 <br /></p>
 
 <blockquote>
-  <p>참고
+  <p>참고  <br />
 <a href="https://sohee-dev.tistory.com/63">https://sohee-dev.tistory.com/63</a>   <br />
 <a href="https://m.blog.naver.com/ndb796/221234424646">https://m.blog.naver.com/ndb796/221234424646</a></p>
 </blockquote>
