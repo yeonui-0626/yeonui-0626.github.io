@@ -1,0 +1,353 @@
+I"�9<h2 id="chapter8-memory-management-2-paging">Chapter8. Memory Management (2) Paging</h2>
+
+<h2 id="불연속-할당-noncontigous-allocation">불연속 할당, Noncontigous allocation</h2>
+<ul>
+  <li>페이징</li>
+  <li>세그멘테이션</li>
+  <li>페이지드 세그멘테이션</li>
+</ul>
+
+<h3 id="paging">Paging</h3>
+
+<ul>
+  <li>프로세스의 주소 공간을 동일한 크기의 <strong>페이지</strong>로 나누고 물리적 메모리를 고정된 크기의 <strong>프레임</strong>으로 나누어 메모리에 올리는 것.</li>
+  <li>각 프로세스의 주소 공간 저체를 물리적 메모리에 한꺼번에 올리 필요가 없고, 일부는 backing storage, 일부는 물리적 메모리에 나누어 올린다.</li>
+  <li>항상 프로그램이 연속적인 메모리 공간에 올라가는 것은 아니기 때문에 단순히 시작주소를 더해준다고 해서 그 정확한 위치를 찾을 수는 없다.</li>
+</ul>
+
+<h3 id="page-table">Page table</h3>
+
+<ul>
+  <li>논리적 주소를 물리적 주소로 변환하기 위함.</li>
+  <li>논리적인 page가 어떤 물리적인 위치에 올라가있는지 저장되어 있음.</li>
+  <li>인덱스를 이용해 바로 접근가능.</li>
+  <li>
+    <p>프로그램마다 페이지 테이블을 저장해야하고 페이지 테이블은 메인 메모리에 저장되어 있다.</p>
+  </li>
+  <li>PTBR : page table의 base register 주소값을 가리킴.</li>
+  <li>PTLR : page table의 크기를 보관.</li>
+  <li>모든 메모리 접근 연산에는 2번의 memory access 가 필요하다.
+    <ul>
+      <li>page table접근 1 번 , data/instruction 접근 1 번</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="/assets/images/posts/os/2022-04-11-os-8-1.png" alt="Untitled" /></p>
+
+<ul>
+  <li><strong>TLB</strong>
+    <ul>
+      <li>메인 메모리와 cpu사이의 주소변환을 해주는 하드웨어 장치</li>
+      <li>주소 변환을 위한 캐쉬 메모리</li>
+      <li>주소변환시, TLB에 저장되어 있으면 바로 물리적 주소로 변환 ⇒ <strong>속도 향상</strong></li>
+      <li>
+        <p>빈번히 참조 되는 몇가지의 페이지 정보만 저장</p>
+
+        <p><img src="/assets/images/posts/os/2022-04-11-os-8-2.png" alt="Untitled" /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="연관-레지스터를-사용한-평균-메모리-접근-시간effective-access-time">연관 레지스터를 사용한 평균 메모리 접근 시간(Effective Access Time)</h3>
+
+<ul>
+  <li>메모리에 접근하는 시간을 1, 연관 레지스터에 접근하는 시간을 $ε$ 이라한다.(이때 ε 는 보다 충분히 작은 값.</li>
+  <li>요청된 페이지에 대한 주소 변환 정보가 연관 레지스터에 존재할 확률을 a라고 한다.</li>
+  <li>평균 메모리 접근 시간(EAT)은 다음과 같다.
+    <ul>
+      <li>EAT = (1+ε)a+(1 + (1+ε) )(1-a) = 2 + ε - a
+        <ul>
+          <li>(1+ε)a : 요청된 페이지의 주소 변환 정보가 TLB에 존재하는 경우
+            <ul>
+              <li>TLB 접근(ε) + 실제 메모리 접근 (1)</li>
+            </ul>
+          </li>
+          <li>(1 + (1+ε) )(1-a) : 요청된 페이지의 주소 변환 정보가 TLB에 존재하지 않는 경우
+            <ul>
+              <li>TLB 접근(ε) + 페이지 테이블을 위해 메모리에 접근(1) + 실제 메모리 접근 (1)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="계층적-페이징">계층적 페이징</h3>
+
+<ul>
+  <li>현대의 컴퓨터는 주소 공간이 매우 큰 프로그램을 지원한다.
+    <ul>
+      <li>32 비트 주소 체계를 사용하는 컴퓨터라면 4GB의 주소 공간이 필요하다.
+        <ul>
+          <li>페이지 사이즈가 4K 라면, 한 프로세스당 페이지 테이블을 위해 1M 크기의 페이지 테이블 entry가 필요하다.</li>
+          <li>각 페이지 테이블 entry가 4B 라면 프로세스당 4M의 page table이 필요하다.</li>
+          <li>그러나 대부분의 프로그램은 4G의 주소 공간 중 지극히 일부만 사용흐르모 페이지 페이블 공간이 심하게 낭비된다.</li>
+        </ul>
+      </li>
+      <li>위의 문제를 해결하기 위해 page table 자체를 page로 구성한다.
+  <strong>⇒ 2단계 페이징 기법</strong>    <br />
+  <img src="/assets/images/posts/os/2022-04-11-os-paging.jpg" alt="Untitled" /></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2단계-페이징-기법">2단계 페이징 기법</h3>
+
+<ul>
+  <li>주소 변환을 위해 외부 페이지 페이블과 내부 페이지 테이블의 두 단계에 걸친 테이블을 사용한다.</li>
+  <li>사용하지 않는 주소 공간에 대해서는 외부 페이지 테이블의 항목을 NULL로 설정하며, 여기에 대응하는 내부 페이지 테이블을 생성하지 않는다.
+    <ul>
+      <li>page table을 위해 추가적인 메모리를 쓰지만 사용하지 않는 주소 공간에 대해서는 외부 페이지 테이블의 항목을 NULL로 설정하므로써 공간을 인다.</li>
+      <li>사용되지 않는 주소공간이 많아 이렇게 추가적인 메모리를 쓰는 것이 더 효율적.</li>
+    </ul>
+  </li>
+  <li>페이지 테이블을 위해 사용되는 메모리 공간을 줄이지만, 페이지 테이블의 수가 증가하므로 시간적인 손해가 뒤따른다.</li>
+</ul>
+
+<p><strong>Logical Address의 구성</strong>(32비트 컴퓨터, page 크기는 4K)</p>
+<ul>
+  <li>p1 : outer page의 index</li>
+  <li>p2 : outer page의 변위 (offset)</li>
+  <li>d : 페이지 내에서의 offset</li>
+</ul>
+
+<h3 id="다단계-페이징-기법과-성능">다단계 페이징 기법과 성능</h3>
+<ul>
+  <li>주소 공간이 커질수록 페이지 테이블의 크기도 커지면서 주소 변환을 위해 메모리 공간 남비가 심해진다.</li>
+  <li>다단계 페이지 테이블을 사용하면 페이지 테이블을 위해서 사용되는 메모리 공간의 소모를 줄일 수 있지만 메모리 접근 시간이 늘어난다.</li>
+  <li><strong>TLB을 통해 메모리 접근 시간을 줄일 수 있다.</strong></li>
+  <li>4단계 페이지를 사용하는 경우
+    <ul>
+      <li>메모리 접근 시간이 100ns, TLB 접근 시간이 20ns</li>
+      <li>요청된 페이지 정보가 TLB에 존재할 확률 : 98%</li>
+      <li>평균 메모리 접근 시간(EAT) : 0.98 x 120+ 0.02 x 520 = 128ns</li>
+      <li><strong>⇒ 주소 변환을 위해 128 -100 인 28ns가 소요된다.</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="memory-protection">Memory Protection</h3>
+
+<ul>
+  <li>사용되지 않는 메모리 영역에 대해서도 entry가 존재하기 때문에 그 페이지에 대한 구분이 필요하다.</li>
+  <li>그래서 Page table 의 각 entry 마다 <strong>메모리 보호를 위한 보호비트와 무효비트</strong>가 존재한다.</li>
+</ul>
+
+<p>✔️ Protection bit</p>
+<ul>
+  <li>page에 대한 접근 권환</li>
+  <li>read / wirte / read-only</li>
+</ul>
+
+<p>✔️ Valid-Invalid bit</p>
+<ul>
+  <li>valid : 페이지가 frame에 실제로 올라와 있음</li>
+  <li>invalid : 페이지가 frame 에 올라와 있지 않음</li>
+</ul>
+
+<h3 id="inverted-page-table역페이지-기법">Inverted Page Table(역페이지 기법)</h3>
+
+<ul>
+  <li>각 프로세스별로 프로세스를 실행하기 위한 모든 page에 대한 page table entry가 존재
+  ⇒ 공간 낭비 심각, 공간을 절역해야함   <br />
+  ⇒ 그래서 나온게 <strong>Inverted page table</strong></li>
+</ul>
+
+<p><img src="/assets/images/posts/os/2022-04-11-os-8-3.png" alt="Untitled" /></p>
+
+<ul>
+  <li>페이지 테이블로 인한 메모리 공간의 낭비 문제를 해결하기 위해 역페이지 기법을 사용.</li>
+  <li>물리적 메모리의 페이지 프레인 하나당 페이지 테이블에 하나씩의 항목을 두는 방식이다.</li>
+  <li>논리적 주소에 대해 페이지 테이블을 만드는 것이 아니라, 물리적 주소에 대해 페이지 테이블을 만드는 것.</li>
+  <li>시스템 전체에 페이지 테이블 딱 하나 존재.</li>
+  <li>page table의 entry 가 물리적인 메모리의 page frame수 만큼 존재</li>
+  <li>page frame의 f 번째 frame으로 가면 logical 데이터를 얻을 수 있음.</li>
+  <li>논리적인 메모리는 프로그램마다 별도로 있기 때문에 프로세스 id(pid)를 같이 저장</li>
+  <li>
+    <p>pid 프로세스의 p 페이지는 어디 저장 되어있나?
+   → page table을 탐색, &lt;pid, p&gt;를 찾는다면 해당 위치의 offet(f)가 물리적 위치를 나타내는 것.(그 페이지는 f 번째 프레임에 저장되있는 것을 말함.)</p>
+  </li>
+  <li>단점
+    <ul>
+      <li>entry 를 모두 탐색해야함.</li>
+      <li>공간을 많이 줄일 수 있으나 시간적인 오버헤드가 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="shared-page">Shared Page</h3>
+
+<ul>
+  <li>여러 프로세스가 공유할 수 있는 코드 부분을 같은 물리적인 프레임으로 매핑해주는 기법.
+    <ul>
+      <li>공유 코드 : 메모리 공간을 효율적인 사용을 위해 여러 프로세스에 의해 공통적으로 될 수 있도록 작성된 코드를 말한다.</li>
+      <li>공유 페이지 : 공유 코드를 담고 있는 페이지를 말한다.</li>
+    </ul>
+  </li>
+  <li>공유 페이지 물리적인 메모리에 하나만 올려둠.</li>
+  <li>조건
+    <ul>
+      <li>Read-only로 Setting</li>
+      <li>shared address는 모든 프로세서의 동일한 logical address space에 서 동일한 위치에 있어야한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="segmemtation">Segmemtation</h2>
+
+<ul>
+  <li>프로그램을 의미단위인 <strong>segment</strong>로 나눔</li>
+  <li>protection bit 도 있고 share 도 가능</li>
+</ul>
+
+<h3 id="segmentation-하드웨어">Segmentation 하드웨어</h3>
+
+<ul>
+  <li>Logical address
+    <ul>
+      <li>&lt; segment number, offset &gt;</li>
+    </ul>
+  </li>
+  <li>Segment table
+    <ul>
+      <li>entry 정보
+        <ul>
+          <li>base : 세그먼트의 물리적 주소의 시작 위치</li>
+          <li>limit : 세그먼트 길이</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>register
+    <ol>
+      <li>STBR(Segment-table base register
+        <ul>
+          <li>물리적 메모리에서 segment table의 위치</li>
+        </ul>
+      </li>
+      <li>STLR(Segment-table length register)
+        <ul>
+          <li>프로그램이 사용하는 segment의 길이(entry 수)</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>각 세그먼트 별로 주소변환을 해야하므로 세그먼트 table 필요</li>
+</ul>
+
+<p><img src="/assets/images/posts/os/2022-04-11-os-8-4.png" alt="Untitled" /></p>
+
+<ul>
+  <li>entry 정보
+    <ul>
+      <li>limit : 세그먼트의 길이</li>
+      <li>세그먼크의 길이가 균일하지 않으므로 길이를 저장해둠.</li>
+    </ul>
+  </li>
+  <li><strong>세그먼트의 시작위치(base)에 다가 offset(d)을 더해서 주소를 찾음.</strong></li>
+  <li>세그먼트 번호s가 segment 수보다 작아야한다.
+    <ul>
+      <li>그 값보다 큰 값을 요청했다면 잘못된 요청이기 때문에 trap(sw inpterrupt)에 걸림.</li>
+    </ul>
+  </li>
+  <li>세그먼크의 길이보다 offset이 더 크면 안된다.
+    <ul>
+      <li>마찬가지로 trap에 걸림</li>
+    </ul>
+  </li>
+  <li>
+    <p>세그먼트 길이는 offset으로 표현할 수 있는 길이보다 크면 안된다.</p>
+
+    <p><img src="/assets/images/posts/os/2022-04-11-os-8-5.png" alt="Untitled" /></p>
+  </li>
+</ul>
+
+<h3 id="메모리-보호-기법와-공유-세그먼트">메모리 보호 기법와 공유 세그먼트</h3>
+
+<p><strong>메모리 보호 기법</strong></p>
+
+<ul>
+  <li>각 세그먼트 별로 <strong>보호 비트</strong>가 있다.
+    <ul>
+      <li>보호 비트는 각 세그먼트에 대해 읽기/쓰기/실행 등의 권한이 있는 지를 나타낸다.</li>
+    </ul>
+  </li>
+  <li>각 세그먼트 별로 <strong>유효 비트</strong>가 있다.
+    <ul>
+      <li>해당 세그먼트가 현재 물리적 메모리에 적재되어 있는 지를 나타낸다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>공유 세그먼트</strong></p>
+
+<ul>
+  <li>이 세그먼트를 공유하는 모든 프로세스의 주소 공간에서 동일한 논리적 주소에 위치해야한다.</li>
+</ul>
+
+<h3 id="세그먼테이션의-장점과-단점">세그먼테이션의 장점과 단점</h3>
+
+<ul>
+  <li>단점
+    <ul>
+      <li>크기가 균일하지 않다
+        <ul>
+          <li>그래서 firtst fit, best fit을 사용해야함</li>
+        </ul>
+      </li>
+      <li>물리적 메모리 관리에서 외부 조각이 발생하게 된다.</li>
+    </ul>
+  </li>
+  <li>장점
+    <ul>
+      <li>segment 는 의미 단위이기 때문에 공유와 보안에 있어 paging보다 훨씬 효과적이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="페이지드-세그먼테이션">페이지드 세그먼테이션</h3>
+
+<p><img src="/assets/images/posts/os/2022-04-11-os-8-6.png" alt="Untitled" /></p>
+
+<ul>
+  <li>세그먼트당 페이지 테이블 존재</li>
+  <li>s 세그먼트에 대한 주소변환 → 페이지 테이블의 시작 위치</li>
+  <li>d → 페이지 테이블의 offset과 물리적인 주소에서의 offset으로 나눌 수 있음</li>
+  <li>&lt;세그먼트 번호, 오프셋&gt; 으로 구성된 논리적 주소를 물리적 주소로 변환하는 과정
+    <ul>
+      <li>논리적 주소의 상위 비트인 세그먼트 번호(s)를 통해서 세그먼트 테이블의 해당 항목에 접근한다.</li>
+      <li>이 세그먼트 항목에는 세그먼트의 길이과 그 세그먼트의 페이지 테이블 시작 주소가 들어 있다.</li>
+      <li>오프셋 값(d)을 세그먼트 내에서의 페이지 번호(p), 페이지 내에서의 변위(d’)로 사용하도록 쪼갠다.</li>
+      <li>p와 d’f를 이용하여 물리적 메모리에 접근한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>✅</p>
+
+<p>주소변환에 있어서 운영체제의 역할은 없다.  <br />
+다 하드웨어가 한다.  <br />
+어떤 프로세스가 메모리에 접근하는 것은 운영체제가 관여하지 않는다.  <br />
+프로세스가 CPU를 잡고 있는데 메모리에 접근할 때마다 CPU가 운영체제에 넘어갈 수는 없음.</p>
+
+<p><br />
+<br /></p>
+
+<hr />
+
+<p><br />
+<br /></p>
+
+<blockquote>
+  <p>참고 <br />
+<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">KOCW 이화여자대학교 2014 반효경 교수님</a>   <br />
+<a href="https://steady-coding.tistory.com/561">참고블로그1</a></p>
+</blockquote>
+:ET
