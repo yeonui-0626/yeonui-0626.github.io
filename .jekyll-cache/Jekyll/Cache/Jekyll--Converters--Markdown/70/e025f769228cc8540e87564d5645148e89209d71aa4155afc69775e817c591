@@ -1,0 +1,48 @@
+I"�<h2 id="백준-1629-번-곱셈">백준 1629 번 곱셈</h2>
+
+<p><a href="https://www.acmicpc.net/problem/1629">문제보기</a></p>
+
+<h3 id="1-문제-풀이">1. 문제 풀이</h3>
+
+<h4 id="분할-정복을-이용한-거듭제곱-구하기">분할 정복을 이용한 거듭제곱 구하기</h4>
+
+<ul>
+  <li>지수 법칙과 나머지 연산을 이용하는 수학 문제이다.</li>
+  <li>지수 법칙
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">a^n</code> 을 구하고자 할 떄,
+        <ul>
+          <li>n이 짝수라면, <code class="language-plaintext highlighter-rouge">a^n = a^(n/2) * a^(n/2)</code></li>
+          <li>n이 홀수라면, <code class="language-plaintext highlighter-rouge">a^n = a^(n/2) * a^(n/2) * a</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>나머지 연산
+    <ul>
+      <li>( A * B ) % C
+        <ul>
+          <li>= ( A % C  * B % C ) % C</li>
+          <li>= ( A % C  * B % C )</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>이 두가지를 이용해야 입력으로 들어오는 2,147,483,647 이하의 자연수의 거듭제곱을 구할 수 있다.</p>
+  </li>
+  <li>거듭제곱을 구하는 함수의 입력으로 밑수 a와 지수 b를 받는다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">divPow(long a, long b)</code></li>
+    </ul>
+  </li>
+  <li>재귀를 이용하여 지수가 1이 될 때까지 a의 거급제곱을 구한다.</li>
+  <li>이 때, 거듭제곱을 하면서 long의 범위를 벗어날 수 있다.</li>
+  <li>때문에 mod C 를 통해 나머지를 계속 넘겨준다.</li>
+</ul>
+
+<h3 id="2-코드">2. 코드</h3>
+
+<script src="https://gist.github.com/yeonui-0626/a5fff5ca7c53e416c476c081eb49d483.js"></script>
+
+:ET
