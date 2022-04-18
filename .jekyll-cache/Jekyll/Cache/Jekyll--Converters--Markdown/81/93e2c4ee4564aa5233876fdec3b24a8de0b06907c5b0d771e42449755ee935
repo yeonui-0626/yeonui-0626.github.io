@@ -1,0 +1,50 @@
+I"K<h2 id="백준-9252-번-lcs2-최장-공통-부분-수열-dp">백준 9252 번 LCS2 (최장 공통 부분 수열, DP)</h2>
+
+<p><a href="https://www.acmicpc.net/problem/9252">문제보기</a></p>
+
+<h3 id="1-문제-풀이">1. 문제 풀이</h3>
+
+<h4 id="lcs">LCS</h4>
+<p><strong>Longest Common Subsequence, 최장 공통 부분 수열</strong></p>
+<ul>
+  <li>두 수열이 주어졌을 때, 부분 수열 중, 가장 긴 수열을 찾는 문제이다.</li>
+  <li>문제의 예제로 확인해보자
+    <ul>
+      <li><strong>ACA</strong>Y<strong>K</strong>P</li>
+      <li>C<strong>A</strong>P<strong>CAK</strong></li>
+      <li>두 수열의 LCS는 ACAK다 된다.</li>
+    </ul>
+  </li>
+  <li>LCS를 구하는 알고리즘은 DP를 이용하고 이전까지의 LCS 값을 이용한다.
+    <h4 id="lcs-점화식-이해하기">LCS 점화식 이해하기</h4>
+  </li>
+  <li>수열 ACAYKP(str1) 를 기준으로 CAPCAK(str2)의 문자를 하나하나 살펴보며 LCS를 구해보자</li>
+  <li>일단 점화식이 모든 배열에서 성립하게 하기 위해 0인덱스는 0으로 둔다.
+  <img src="/assets/images/posts/algo/22-04-18-1.jpg" alt="Untitled" /></li>
+  <li>str2의 문자와 str1의 문자와 겹치는 지 확인하여 겹친다면 표시한다.
+    <ul>
+      <li>한 줄을 완성하게 되면 str1과 str2의 c 의 LCS 길이가 나온다.
+<img src="/assets/images/posts/algo/22-04-18-2.jpg" alt="Untitled" /></li>
+    </ul>
+  </li>
+  <li>위와 같은 방법으로 배열을 채운다.
+    <ul>
+      <li>공통된 부분이 나타났다면 대각선 + 1</li>
+      <li>공통된 부분이 아니라면 (i-1,j)와  (i,j-1) 중 더 큰 값을 가져온다.</li>
+      <li><img src="/assets/images/posts/algo/22-04-18-3.jpg" alt="Untitled" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>이렇게 완성된 배열은 다음과 같다.</p>
+
+    <p><img src="/assets/images/posts/algo/22-04-18-4.jpg" alt="Untitled" /></p>
+  </li>
+</ul>
+
+<h3 id="2-시행착오">2. 시행착오</h3>
+
+<h3 id="3-코드">3. 코드</h3>
+
+<script src="https://gist.github.com/yeonui-0626/0aaa0abcdfc0b1e0cc7f9d69d84ddddc.js"></script>
+
+:ET
