@@ -1,11 +1,17 @@
-I"r@<blockquote>
-  <p>스프링 강의를 들으면서 spring boot 프로젝트를 생성할 때, 빌드 관리 도구로 maven와 gradle을 선택할 수 있었다.  <br />
-웹 프로젝트를 진행하기 위해서 둘 중 하나가 있어야하는 것 같은데,     이 둘의 역할과 차이를 알아보자</p>
+I">2<blockquote>
+  <p>스프링 강의를 들으면서 spring boot 프로젝트를 생성할 때,   <br />
+빌드 관리 도구로 maven와 gradle을 선택할 수 있었다.  <br />
+웹 프로젝트를 진행하기 위해서 둘 중 하나가 있어야하는 것 같은데,   <br />
+이 둘의 역할과 차이를 알아보자</p>
 </blockquote>
 
 <h2 id="maven-과-gradle">Maven 과 Gradle</h2>
 
-<h3 id="빌드-관리-도구">빌드 관리 도구</h3>
+<p>Maven과 Gradle은 자바의 대표적인 빌드 관리 도구이다.</p>
+
+<h3 id="빌드-관리-도구란">빌드 관리 도구란?</h3>
+<p>필요한 라이브러리를 알아서 다운 받아주고 버전도 관리도 관리해주는 등   <br />
+프로젝트 정보 관리를 편리하게 해주는 도구 !</p>
 
 <ul>
   <li>프로젝트에서 필요한 파일(xml, properties, jar)들을 자동으로 인식하여 빌드해주는 도구</li>
@@ -28,7 +34,10 @@
   <li>pom.xml로 편하게 의존성(Dependency) 관리</li>
 </ul>
 
-<p>Ant는 라이프 사이클도 없구,,, 자동으로 라이브러리도 안 가져오구,,,대규모 프로젝트에서는 복잡해진다고 하네유</p>
+<blockquote>
+  <p>Ant는 라이프 사이클도 없구,,, 자동으로 라이브러리도 안 가져오구,,,
+대규모 프로젝트에서는 복잡해진다고 하네유</p>
+</blockquote>
 
 <p><strong>pom.xml</strong></p>
 
@@ -46,7 +55,7 @@
       <li><code class="language-plaintext highlighter-rouge">&lt;properties&gt;</code>
         <ul>
           <li>maven 내부에서 반복적으로 사용될 상수 값을 정의</li>
-          <li><code class="language-plaintext highlighter-rouge">&lt;java-version&gt;1.8&lt;/java-version&gt;</code>로 정의하면 <code class="language-plaintext highlighter-rouge">${java-version}</code> 사용 가능 하다. 값은 1.8</li>
+          <li><code class="language-plaintext highlighter-rouge">&lt;java-version&gt;1.8&lt;/java-version&gt;</code>로 정의하면 <code class="language-plaintext highlighter-rouge">${java-version}</code> 로 사용 가능 하다. 값은 1.8</li>
         </ul>
       </li>
       <li><code class="language-plaintext highlighter-rouge">&lt;dependencies&gt;</code>
@@ -142,10 +151,7 @@
 <span class="nt">&lt;/project&gt;</span>
 </code></pre></div></div>
 
-<p><strong>Maven 라이브러리 사이트</strong></p>
-
-<p><a href="https://mvnrepository.com/">https://mvnrepository.com/</a></p>
-
+<p><strong>Maven 라이브러리 사이트</strong> -&gt; <a href="https://mvnrepository.com/">https://mvnrepository.com/</a></p>
 <ul>
   <li>필요한 의존성 라이브러리 설정을 위한 xml 코드를 가져올 수 있음.</li>
 </ul>
@@ -171,38 +177,38 @@
   <li><code class="language-plaintext highlighter-rouge">build.gradle</code> 예시</li>
 </ul>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
-	<span class="n">id</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="err">'</span> <span class="n">version</span> <span class="err">'</span><span class="mf">2.6</span><span class="o">.</span><span class="mi">4</span><span class="err">'</span>
-	<span class="n">id</span> <span class="err">'</span><span class="n">io</span><span class="o">.</span><span class="na">spring</span><span class="o">.</span><span class="na">dependency</span><span class="o">-</span><span class="n">management</span><span class="err">'</span> <span class="n">version</span> <span class="err">'</span><span class="mf">1.0</span><span class="o">.</span><span class="mi">11</span><span class="o">.</span><span class="na">RELEASE</span><span class="err">'</span>
-	<span class="n">id</span> <span class="err">'</span><span class="n">java</span><span class="err">'</span>
-<span class="o">}</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plugins {
+	id 'org.springframework.boot' version '2.6.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
 
-<span class="n">group</span> <span class="o">=</span> <span class="err">'</span><span class="n">com</span><span class="o">.</span><span class="na">community</span><span class="err">'</span>
-<span class="n">version</span> <span class="o">=</span> <span class="err">'</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">1</span><span class="o">-</span><span class="no">SNAPSHOT</span><span class="err">'</span>
-<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="err">'</span><span class="mf">1.8</span><span class="err">'</span>
+group = 'com.community'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
 
-<span class="n">configurations</span> <span class="o">{</span>
-	<span class="n">compileOnly</span> <span class="o">{</span>
-		<span class="n">extendsFrom</span> <span class="n">annotationProcessor</span>
-	<span class="o">}</span>
-<span class="o">}</span>
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
-<span class="n">repositories</span> <span class="o">{</span>
-	<span class="n">mavenCentral</span><span class="o">()</span>
-<span class="o">}</span>
+repositories {
+	mavenCentral()
+}
 
-<span class="n">dependencies</span> <span class="o">{</span>
-	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">web</span><span class="err">'</span>
-	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">web</span><span class="o">-</span><span class="n">services</span><span class="err">'</span>
-	<span class="n">compileOnly</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">projectlombok</span><span class="o">:</span><span class="n">lombok</span><span class="err">'</span>
-	<span class="n">developmentOnly</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">devtools</span><span class="err">'</span>
-	<span class="n">annotationProcessor</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">projectlombok</span><span class="o">:</span><span class="n">lombok</span><span class="err">'</span>
-	<span class="n">testImplementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">test</span><span class="err">'</span>
-<span class="o">}</span>
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
 
-<span class="n">tasks</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="err">'</span><span class="n">test</span><span class="err">'</span><span class="o">)</span> <span class="o">{</span>
-	<span class="n">useJUnitPlatform</span><span class="o">()</span>
-<span class="o">}</span>
+tasks.named('test') {
+	useJUnitPlatform()
+}
 </code></pre></div></div>
 
 <h3 id="maven-vs-gradle">Maven vs. Gradle</h3>
@@ -222,9 +228,7 @@
 <blockquote>
   <p>참고</p>
 
+  <p><a href="https://www.youtube.com/watch?v=3Jp9kGDb01g">https://www.youtube.com/watch?v=3Jp9kGDb01g</a>  <br />
+<a href="https://hyojun123.github.io/2019/04/18/gradleAndMaven/">https://hyojun123.github.io/2019/04/18/gradleAndMaven/</a></p>
 </blockquote>
-
-<p><a href="https://www.youtube.com/watch?v=3Jp9kGDb01g">https://www.youtube.com/watch?v=3Jp9kGDb01g</a></p>
-
-<p><a href="https://hyojun123.github.io/2019/04/18/gradleAndMaven/">https://hyojun123.github.io/2019/04/18/gradleAndMaven/</a></p>
 :ET

@@ -1,0 +1,35 @@
+I"�<h2 id="백준-4095-번-최대-정사각형">백준 4095 번 최대 정사각형</h2>
+
+<p><a href="https://www.acmicpc.net/problem/4095">문제보기</a></p>
+
+<h3 id="1-문제-풀이">1. 문제 풀이</h3>
+
+<ul>
+  <li>DP 로 안 풀면 시간초과가 난다.</li>
+  <li>쉬운 방법으로  4 중 for문을 돌려 해결할 수 있지만 이렇게 풀린다면 골드문제가 아니였을 것.</li>
+  <li>2차원 DP 배열을 선언해서 현재 위치 중에서 만들 수 있는 정사각형의 길이의 최소값에 +1을 한다.(정사각형을 만들 수 있어야하므로)</li>
+  <li>위, 아래 뿐만 아니라 대각선까지 고려해야한다.</li>
+  <li>점화식
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">map[i][j] = Math.min(Math.min(map[i - 1][j], map[i][j - 1]), map[i - 1][j - 1]) + 1;</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-시행착오">2. 시행착오</h3>
+<ul>
+  <li>점화식을 세우려 고민을 했지만 모든 테케에서 맞지는 못햇다.</li>
+  <li>역시 DP가 제일 어려운 것 같다. 하지만 점화식을 알면 코드는 간단 !</li>
+  <li>배열 입력에 1이 있는지 없는 지에 따라 다르게 처리 해주는 방식으로 코드를 작성했는데 다른 블로그의 코드를 보다가 초기값을 다르게 설정하는 신박한 방법을 보았다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">int cnt = flag ? 0 : 1</code></li>
+      <li>1이 있는지 없이지에 따라 초기값을 다르게 처리해주면 따로 if문을 사용하지 않아도 되었다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-코드">3. 코드</h3>
+
+<script src="https://gist.github.com/yeonui-0626/fe818906f9311db3c8c7c98a0cf0d1a1.js"></script>
+
+:ET
