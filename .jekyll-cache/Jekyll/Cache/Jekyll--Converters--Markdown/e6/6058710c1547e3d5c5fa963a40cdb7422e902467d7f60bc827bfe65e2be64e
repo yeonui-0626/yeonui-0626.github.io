@@ -1,0 +1,210 @@
+I"�"<h2 id="aop1-aop-관점-지향-프로그래밍">AOP(1) AOP, 관점 지향 프로그래밍</h2>
+
+<h2 id="aop-란">AOP 란?</h2>
+
+<p><strong>AOP : Aspect Oriented Programming</strong></p>
+
+<p>실제로 서비스를 운영한다고 생각해보자.  <br />
+<strong>사용자에게</strong> <strong>서비스를 제공</strong>하고 사용자의 요청을 처리하는 것이 주 업무일 것이다.  <br />
+근데 서비스를 <strong>운영하는 입장</strong>에서 서비스 사용 시간대의 통계를 계산하기 위한 데이터가 필요할 수도 있고 <strong>개발자의 입장</strong>에서는 서비스의 속도를 높이기 위해 사용자가 서비스를 이용하는 데에 걸리는 시간이 궁금할 수도 있다.</p>
+
+<p>이렇게 <strong>사용자 관점, 개발자 관점, 운영자 관점</strong>에 따라 프로그래밍을 하는 것이  <br />
+AOP, 관점 지향 프로그래밍이다.</p>
+
+<p>이런 로직을 하나의 기능마다 한번에 구현한다고 생각하면 직접 짜보기 않아도 코드가 복잡해질 것이라 예상된다. 그래서 <strong>코드를 따로 작성 하지만</strong> 코드의 흐름에 따라 서로 관점이 다른 로직들을 한번에 실행할 수 있는 매커니즘이 필요하다.</p>
+
+<p>이 매커니즘으로 구현하는 것까지가 AOP 이고  <br />
+AOP는 only 자바, Spring AOP, AspectJ 를 이용하여 구현할 수 있다.</p>
+
+<blockquote>
+  <p>앞으로 올라올 AOP 게시물에서 세가지 방법으로 구현하는 AOP에 대해 다뤄보려고 한다.</p>
+</blockquote>
+
+<h3 id="cross-cutting-concern-과-core-concern">Cross-cutting Concern 과 Core Concern</h3>
+
+<p><strong>핵심 기능과 공통 기능</strong></p>
+
+<p>쇼핑몰로 예를 들면 로그인, 회원가입, 상품 구매, 장바구니 담기 등의 업무를 구현하는 것이 <strong>Core Concern, 핵심 로직</strong>이 되고,   <br />
+서비스 사용 시간대를 파악하기 위한 로그을 남기는 것은 <strong>Cross-cutting Concern, 공통 기능</strong> 이다.</p>
+
+<ul>
+  <li>Core Concern
+    <ul>
+      <li><strong>핵심 로직</strong></li>
+      <li>실제 업무</li>
+    </ul>
+  </li>
+  <li>Cross-cutting Concern
+    <ul>
+      <li><strong>실제 업무 외 공통 관심사</strong></li>
+      <li><strong>애플리케이션 전반에 걸쳐 나타남</strong></li>
+      <li>핵심 로직 흐름(상→하)의 중간에(cross) 삽입되고 삭제될 수 있는 로직</li>
+      <li>로그처리, 보안 처리, 트랜잭션 처리</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="core-concern-과-cross-cutting-concern-의-분리">Core Concern 과 Cross-cutting Concern 의 분리</h3>
+
+<p>먼저 요청을 처리하기 위한 메소드가 실행되는 흐름을 알아보자.</p>
+
+<p><img src="/assets/images/posts/2022-04-21-web-1.png" alt="Untitled" /></p>
+
+<p>만약, 두 코드를 분리하지 않는다면 왼쪽 사진처럼 반복적으로 cross-cutting concern 을 위한 코드를 작성해야한다.</p>
+
+<p>따로 분리하게 되면,  <br />
+핵심 로직만 있는 메소드을 구현하고 이 메소드를 공통 기능에서 불러와 실행하도록 구현한다.  <br />
+이 때, 공통기능에서 핵심로직을 불러오지만 <strong>Proxy 객체를</strong> 이용해  <br />
+핵심 로직<strong>에 공통기능이 불려진 것처럼 구현해야한다.</strong></p>
+
+<p>❓ <strong>Proxy 객체</strong></p>
+
+<blockquote>
+  <p>원래 객체를 감싸고 있는 객체.  <br />
+접근을 제어하고 싶거나,   <br />
+부가 기능을 추가하고 싶을 때 사용한다.</p>
+
+</blockquote>
+
+<hr />
+
+<h3 id="aop-용어">AOP 용어</h3>
+
+<ul>
+  <li>Target : 부가 기능이 부여되는 대상</li>
+  <li>Advice : 부가할 기능</li>
+  <li>Join Point : 적용되는 메소드, 필드, 객체, 생성자 등등</li>
+  <li>Point cut : 실제 advice가 적용될 지점.</li>
+</ul>
+
+<ol>
+  <li>Target
+    <ol>
+      <li>Advice 가 적용될 <strong>대상 객체</strong></li>
+      <li>AOP 덕분에 타킷 객체는 횡단관심사를 신경쓰지 않고 비즈니스 로직에만 집중할 수 있음.</li>
+    </ol>
+  </li>
+  <li>Advice
+    <ol>
+      <li>Cross-cutting Concern을 Core Concern에 언제 적용할 것인가</li>
+      <li>구현하고자 하는 Cross-cutting Concern의 기능</li>
+      <li>대상 객체의 Join Point에 Weaving 되어 동작할 코드 작성
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Before</code> : 핵심로직 전에 수행</li>
+          <li><code class="language-plaintext highlighter-rouge">After</code> : 에러에 상관없이 핵심로직이 종료되면 실행</li>
+          <li><code class="language-plaintext highlighter-rouge">AfterThrowing</code> : 예외가 발생하면 실행</li>
+          <li><code class="language-plaintext highlighter-rouge">AfterReturning</code> : 에러 없이 핵심 코드가 종료되면 실행</li>
+          <li><code class="language-plaintext highlighter-rouge">Around</code> : 핵심로직 전후로 실행, 핵심로직 호출</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>조인 포인트(Join Point)
+    <ol>
+      <li>Advice를 적용할 수 있는 지점들(메서드 호출지점, 예외잘생, 필드 값 수정 등)</li>
+      <li>스프링에서는 메서드만 지원</li>
+    </ol>
+  </li>
+  <li>포인트 컷(PointCut)
+    <ol>
+      <li>where 어디에 의 의미</li>
+      <li>메서드명을 직접 명시하거나, 매칭 패턴을 나타내는 정규표현식을 정의하여 사용</li>
+    </ol>
+  </li>
+  <li>Aspect
+    <ol>
+      <li>여러 객체에 공통적으로 적용되는 관심 사항</li>
+      <li>어드바이저(Advisor)라고도 함</li>
+    </ol>
+  </li>
+  <li>Introduction
+    <ol>
+      <li>기존 클래스의 코드 변경 없이 새 메서드나 멤버 변수를 추가하는 기능</li>
+    </ol>
+  </li>
+  <li>Proxy
+    <ol>
+      <li>Advice 를 타깃 객체에 적용하면 생성되는 객체</li>
+      <li>이 객체로 핵심로직이 수행됨.</li>
+      <li>클라이언트 객체 관점에서 보면 타깃 객체와 프록시 객체는 차이가 없음</li>
+    </ol>
+  </li>
+  <li>Weaving
+    <ol>
+      <li>target 객체에 Aspect를 적용해서 새로운 프록시 객체를 생성하는 과정</li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="spring-aop-와-aspectj">Spring AOP 와 AspectJ</h2>
+
+<p>Spring AOP와 AspectJ는 대표적인 java AOP 구현체이다.</p>
+
+<h3 id="spring-aop">Spring AOP</h3>
+
+<ul>
+  <li>IoC, DI, 프록시 패턴, 재동 프록시 생성 기법, 빈 오프젝트의 후처리 조작 기법등을 통해 AOP를 지원한다.</li>
+  <li>스프링과 기본 JDK를 통해 구현가능하다.</li>
+  <li>프록시 디자인 패턴을 사용한다.</li>
+  <li>Join Point로 메소드에만 적용 가능하다.</li>
+</ul>
+
+<h4 id="spring-aop의-생성-절차">Spring AOP의 생성 절차</h4>
+
+<ol>
+  <li>빈 설정파일을 통한 오브젝트 등록</li>
+  <li>빈 후처리기를 통해 컨테이너 초기화 시점에서 자동으로 프록시 생성</li>
+  <li>포인트컷을 활용하여 프록시를 적용할 대상 지정</li>
+  <li>프록시 빈 오브젝트 생성 및 IoC 컨테이너에 등록</li>
+</ol>
+
+<h3 id="aspectj">AspectJ</h3>
+
+<ul>
+  <li>자바기반의 관점 지향 프로그래밍 확장 기능</li>
+  <li>메소드 뿐만 아니라</li>
+  <li>바이트코드 생성과 조작을 통해 AOP 실현.</li>
+  <li>target 객체를 뜯어 고쳐서 부가기능을 직접 넣어주는 직접적인 방식</li>
+</ul>
+
+<p><br />
+<br />
+<br /></p>
+
+<blockquote>
+  <p>아직 Spring AOP와 AspectJ의 차이를 잘 모르겠다. 구현에 있어서 차이가 있는건지, 아니면 어노테이션을 사용하는 방법 자체가 AspectJ 인 것인지… ?</p>
+
+</blockquote>
+
+<p><br />
+<br />
+<br /></p>
+
+<p>next!  <br />
+<a href="https://yeonui-0626.github.io/spring/2022/04/22/web-aop2.html">AOP(2) AOP 적용해보기(with 순수 자바, Spring AOP)</a></p>
+
+<p><br />
+<br />
+<br /></p>
+
+<blockquote>
+  <p>참고</p>
+
+</blockquote>
+
+<p>Spring AOP와 AspectJ 비교</p>
+
+<p><a href="https://jiwondev.tistory.com/152">https://jiwondev.tistory.com/152</a> ← 자세하고 깊은 설명</p>
+
+<p><a href="https://logical-code.tistory.com/118">https://logical-code.tistory.com/118</a></p>
+
+<p><a href="https://honeyinfo7.tistory.com/105">https://honeyinfo7.tistory.com/105</a> ← 자세하고 깊은 설명</p>
+
+<p>AspectJ</p>
+
+<p><a href="https://honeyinfo7.tistory.com/105">https://honeyinfo7.tistory.com/105</a></p>
+
+<p>cross-cutting concern &amp; core concern</p>
+
+<p><a href="https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&amp;blogId=bestheroz&amp;logNo=220298916444">https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&amp;blogId=bestheroz&amp;logNo=220298916444</a></p>
+:ET
