@@ -1,0 +1,68 @@
+I"�<h2 id="백준-14889-번-스타트와-링크">백준 14889 번 스타트와 링크</h2>
+
+<p><a href="https://www.acmicpc.net/problem/14889">문제보기</a></p>
+
+<h2 id="1-문제-풀이">1. 문제 풀이</h2>
+
+<ul>
+  <li>브루트 포스로 분류되어있는 문제이고, 모든 경우를 탐색하기 위해서 주어진 수 N 에서 N/2 개의 수를 뽑아 나열하는 순열을 사용했다.</li>
+  <li>비트마스킹으로 비슷한 문제를 푼 적이 있어서 다시 기억을 더듬어보고자 또 비트마스킹을 사용했다.</li>
+</ul>
+
+<h3 id="비트마스킹">비트마스킹</h3>
+<p>flag를 비트마스킹을 위한 이진수로 둔다.</p>
+
+<ul>
+  <li>방문 표시하기
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">flag</span> <span class="o">|</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span>
+</code></pre></div>    </div>
+    <ul>
+      <li>1을 i번 쉬프트한 후, flag와 or 연산을 하게 되면 flag의 i번째 자리에 1이 있든 없든 1이 들어가게 되어 1이 표시된다. <br />
+<br /></li>
+    </ul>
+  </li>
+  <li>방문 확인하기
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">flag</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="o">&lt;&lt;</span> <span class="n">i</span>
+</code></pre></div>    </div>
+    <ul>
+      <li>원하는 수만큼 숫자를 뽑았다면 이제 flag를 이용하여 방문표시(1)를 한 곳을 찾아 필요한 연산을 한다.</li>
+      <li>i 번째 자리를 방문 표시 한다면, 1을 i만큼 쉬프트한 뒤, flag와 and 연산을 한 결과를 0인지 아닌지 비교하면 된다.</li>
+      <li>0이 아니라면 방문 o, 0이면 방문 x
+<br />
+<br /></li>
+    </ul>
+  </li>
+  <li>두 팀으로 나누는 것이기 때문에 하나의 팀을 구성하면 나머지 팀을 자동으로 정해진다.
+    <ul>
+      <li>flag가 1100 으로 정해졌다면 1끼리 한팀, 0끼리 한팀으로 보면 됨.</li>
+    </ul>
+  </li>
+  <li>비트 연산으로 구한 flag를 flags 배열에 저장한 뒤,</li>
+  <li>flag들을 확인하며 각 팀의 능력치 합의 차를 구하면 된다.
+    <ul>
+      <li>처음에는 모든 flag들을 확인했지만 꼭 그럴 필요는 없다.
+        <ul>
+          <li>1100 의 결과와 0011의 결과는 동일하기 때문에 비트연산결과의 절반만 계산하면 된다.</li>
+          <li>4를 예로들면 flag가 순서대로
+            <ul>
+              <li>1 ) 1100</li>
+              <li>2 ) 1010</li>
+              <li>3 ) 1001</li>
+              <li>4 ) 0110</li>
+              <li>5 ) 0101</li>
+              <li>6 ) 0011</li>
+            </ul>
+          </li>
+          <li>이렇게 나오는데 (3,4) , (2,5) , (1,6) 쌍으로 결과가 동일하기 때문에 절반만 계산하면 된다.</li>
+          <li>위의 방식으로 시간은 시간은 <code class="language-plaintext highlighter-rouge">284ms-&gt;388ms</code>로 줄일 수 있었지만, flags를 arraylist로 따로 선언하여 메모리는 <code class="language-plaintext highlighter-rouge">13644KB -&gt; 18860KB</code>로 증가했다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="2-코드">2. 코드</h2>
+
+<script src="https://gist.github.com/yeonui-0626/c2437c8343f96f9d40196efe922cf1d3.js"></script>
+
+:ET
