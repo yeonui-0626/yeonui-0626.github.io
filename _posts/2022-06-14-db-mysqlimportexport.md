@@ -3,7 +3,7 @@ layout: post
 title: "[MySQL] 파일 데이터 import/export"
 subtitle:
 categories: MySQL, Database
-tags: [Da, MySQL]
+tags: [Database, MySQL]
 ---
 
 # MySQL data import/export
