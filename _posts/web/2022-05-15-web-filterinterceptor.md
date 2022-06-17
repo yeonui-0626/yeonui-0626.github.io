@@ -2,7 +2,7 @@
 layout: post
 title: "[Spring] 공통기능 처리를 위한 Filter와 Interceptor (+AOP)"
 subtitle:
-categories: Spring, WEB
+categories: Spring WEB
 tags: [WEB, Spring, Filter, Interceptor]
 ---
 
