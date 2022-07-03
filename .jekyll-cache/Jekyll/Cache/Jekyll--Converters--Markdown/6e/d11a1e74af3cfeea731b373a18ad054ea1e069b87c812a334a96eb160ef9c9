@@ -1,0 +1,127 @@
+I"�<h3 id="jpa를-실무에-적용하기-어려운-이유">JPA를 실무에 적용하기 어려운 이유</h3>
+
+<ul>
+  <li>객체와 테이블을 잘 설계하고 매핑하는 것이 중요하다.</li>
+  <li>대규모 시스템을 다루는 실무에서는 여러 테이블이 얽혀있기 때문에 객체 와 테이블을 정확하게 매핑하는 것은 어렵다.</li>
+</ul>
+
+<h3 id="목표">목표</h3>
+
+<blockquote>
+  <p>객체와 테이블을 제대로 설계하고 매핑하는 방법알기<br />
+JPA의 내부 동작 방식 제대로 이해하기
+JPA 가 어떤 SQL을 만들어 내는지 이해하기
+JPA 가 언제 SQL을 실행하는지 이해하기</p>
+</blockquote>
+
+<ol>
+  <li>SQL 의존적인 개발의 문제</li>
+  <li>JAVA의 객체 지향 프로그래밍과 데이터베이스의 관계형 프로그래밍은 패러다임이 다르다.</li>
+  <li>그래서 객체를 데이터베이스를 저장하기 위해서는 SQL을 통한 매핑 작업이 필요하다.</li>
+  <li>결국 개발자가 SQL 매핑 작업을 반복적으로 해야한다.</li>
+  <li>객체와 관계형 데이터베이스의 차이
+    <ol>
+      <li>상속
+        <ol>
+          <li>객체는 있지만 관계형 데이터베이스는 없다.</li>
+          <li>객체의 상속과 유사한 것은 Table의 슈퍼 타입, 서브타입이다.</li>
+        </ol>
+      </li>
+      <li>연관관계
+1.</li>
+      <li>데이터 타입</li>
+      <li>데이터 식별 방법</li>
+    </ol>
+  </li>
+</ol>
+
+<h1 id="jpa">JPA?</h1>
+
+<ul>
+  <li>Java Persistence API</li>
+  <li>자바 진영의 ORM 기술 표준</li>
+</ul>
+
+<h2 id="orm-">ORM ?</h2>
+
+<ul>
+  <li>Object-Relcational Mappling(객체-관게 매핑)</li>
+  <li>객체는 객체대로 설계하고 관계형 데이터베이스는 관계형 데이터베이스댈 설계한다.</li>
+  <li>이 둘을 ORM 프레임워크가 중간에서 매핑한다.</li>
+  <li>대중적인 언어에는 대부분 ORM 기술이 존재한다.
+    <ul>
+      <li>Django 도 있음</li>
+    </ul>
+  </li>
+  <li>JPA는 <strong>애플리케이션과 JDBC 사이에서 동작</strong>한다.</li>
+</ul>
+
+<h3 id="jpa를-왜-사용해야하-하는가">JPA를 왜 사용해야하 하는가?</h3>
+
+<ol>
+  <li>생산성
+CRUD를 코드 한줄로 할 수 있다.</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 저장</span>
+<span class="n">jpa</span><span class="o">.</span><span class="na">persist</span><span class="o">(</span><span class="n">member</span><span class="o">)</span>
+<span class="c1">//조회</span>
+<span class="nc">Member</span> <span class="n">membe</span> <span class="o">=</span> <span class="n">jpa</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">memeberId</span><span class="o">)</span>
+<span class="c1">//수정</span>
+<span class="n">members</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"이름"</span><span class="o">);</span>
+<span class="c1">// 삭제</span>
+<span class="n">jap</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">member</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ol>
+  <li>유지보수</li>
+</ol>
+
+<ul>
+  <li>기존에는 데이터 베이스에 수정사항이 생기면 관련된 모든 SQL을 수정해야했다.</li>
+  <li>JPA를 사용한다면 필드만 추가하면 된다.</li>
+</ul>
+
+<ol>
+  <li>패러다임의 불일치 해결</li>
+</ol>
+
+<ul>
+  <li>JPA와 상속
+    <ul>
+      <li>서브 타입, 슈퍼 타입 테이블에 대해 알아서 두개의 쿼리를 생성해 수행한다.</li>
+    </ul>
+  </li>
+  <li>JPA 와 연관관계, 객체 그래프 탐색</li>
+  <li>엔티티를 신뢰할 수 있다. 계층 사이의 분리가 가능해짐.</li>
+  <li>테이블에서 가져온 엔티디 간 비교를 할 수 있다.</li>
+  <li>
+    <p>1차 캐시와 동일성 보장</p>
+
+    <ul>
+      <li>같은 트램잭션 안에서는 같은 엔티티를 반환한다. 약간의 조회 성능을 향상한다.</li>
+    </ul>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">memberId</span> <span class="o">=</span> <span class="s">"100"</span><span class="o">;</span>
+<span class="nc">Member</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">jpa</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">Memeber</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="n">memberId</span><span class="o">);</span> <span class="c1">// SQL</span>
+<span class="nc">Member</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">jpa</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">Member</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="n">memberId</span><span class="o">)</span> <span class="c1">// 캐시</span>
+<span class="c1">// m1 == m2 : true</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>DB Isolation Level이 Read Commit 이어도 애플리케이션에서 Repeatable Read 보장한다.</li>
+    </ul>
+  </li>
+  <li>트랜잭션을 지원하는 쓰기 지연
+    <ul>
+      <li>트랜잭션을 커밋할 때까지 INSERT SQL을 모았다가 처리한다.</li>
+    </ul>
+  </li>
+  <li>지연 로딩과 즉시 로딩을 옵션으로 설정할 수 있다.
+    <ul>
+      <li>지연 로딩 : 객체가 실제 사용될 때 로딩</li>
+      <li>즉시 로딩 : JOIN SQL로 한번에 연관된 객체까지 미리 조회한다.</li>
+    </ul>
+  </li>
+</ul>
+:ET
