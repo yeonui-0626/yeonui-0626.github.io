@@ -1,0 +1,332 @@
+I"t:<blockquote>
+  <p>인프런 강의 <a href="김영한 님">자바 ORM 표준 JPA 프로그래밍 - 기본편</a>의 강의를 보고 필기한 내용입니다.<br />
+게시글만 보고는 이해하기 어려울 수도 있으니 꼭 강의를 보시기 바랍니다.</p>
+</blockquote>
+
+<h2 id="객체와-테이블-매핑">객체와 테이블 매핑</h2>
+
+<h2 id="엔티티-매핑-종류">엔티티 매핑 종류</h2>
+
+<ul>
+  <li>객체와 테이블 매핑 <code class="language-plaintext highlighter-rouge">@Entity</code> , <code class="language-plaintext highlighter-rouge">@Table</code></li>
+  <li>필드와 칼럼 매핑 <code class="language-plaintext highlighter-rouge">@Column</code></li>
+  <li>기본 키 매핑 <code class="language-plaintext highlighter-rouge">@Id</code></li>
+  <li>연관관계 매핑 : <code class="language-plaintext highlighter-rouge">@ManyToone</code>, <code class="language-plaintext highlighter-rouge">@JoinColumn</code></li>
+</ul>
+
+<h2 id="객체와-테이블-매핑-entity-table">객체와 테이블 매핑 <code class="language-plaintext highlighter-rouge">@Entity</code> <code class="language-plaintext highlighter-rouge">@Table</code></h2>
+
+<p><strong><code class="language-plaintext highlighter-rouge">@Entity</code></strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@Entity</code> 가 붙으면 JPA 가 관리한다.</li>
+  <li>기본 생성자 필수(파라미터가 없는 public 또는 protected 생성자)</li>
+  <li>final 클래스, enum, interface, inner 클래스 사용 X</li>
+  <li>저장할 필드에 사용 X</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">**@Table**</code></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@Table</code> 은 엔티티와 매핑할 테이블을 지정한다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"MBR"</span><span class="o">)</span> <span class="c1">// db의 테이블명</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Member</span><span class="o">{</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="데이터베이스-스키마-자동-생성">데이터베이스 스키마 자동 생성</h3>
+
+<ul>
+  <li>애플리케이션 실행 시점에 db를 로딩하는 기능을 지원한다.</li>
+  <li>DDL을 애플리케이션 실행 시점에 자동 생성</li>
+  <li>테이블 중심 → 객체 중심</li>
+  <li>데이터베이스 방언을 활용해서 데이터 베이스에 맞는 적절한 DDL 생성</li>
+  <li>이렇게 생성된 <strong>DDL 은 개발 장비에서만</strong> 사용
+    <ul>
+      <li>새로 작성하기 때문</li>
+    </ul>
+  </li>
+  <li>생성된 DDL은 운영서버에서는 사용하지 않거나, 적절히 다듬은 후 사용한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">hibernate.hbm2ddl.auto</code> 에서 설정</li>
+</ul>
+
+<p><strong>주의</strong></p>
+
+<ul>
+  <li>운영 장비에는 절대 create, create-drop, update 사용하면 안된다.</li>
+  <li>개발 초기 단계는 create 또는 update</li>
+  <li>테스트 서버는 update 또는 validate</li>
+  <li>스테이징과 운영 서버는 validate 또는 none</li>
+</ul>
+
+<p>스크립트를 작성해보고 테스트 한 뒤, 반영한다.</p>
+
+<h3 id="ddl-생성-기능">DDL 생성 기능</h3>
+
+<ul>
+  <li>제약 조건 추가 (ex. not null, length 등등)</li>
+  <li>유니크 제약 조건 추가
+⇒ DDL 생성 기능은 DDL 을 자동 생성할 때만 사용되고 JPA의 실행 로직에는 영향을 주지 않는다.</li>
+</ul>
+
+<h2 id="필드와-칼럼-매핑">필드와 칼럼 매핑</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@Column</code> : 칼럼 매핑</li>
+  <li><code class="language-plaintext highlighter-rouge">@Temporal</code> : 날짜 타입
+    <ul>
+      <li>Date, Time, TimeStamp 세가지 종류</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">@Enumerated</code> : enum 타입을 매핑할때 사용</li>
+  <li><code class="language-plaintext highlighter-rouge">@Lob</code>
+    <ul>
+      <li>blob, clob 매핑</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">@Transient</code> : 특정 필드를 칼럼에 매핑 하지 않음</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Member</span> <span class="o">{</span>
+ <span class="nd">@Id</span>
+ <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
+ <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"name"</span><span class="o">)</span>
+ <span class="kd">private</span> <span class="nc">String</span> <span class="n">username</span><span class="o">;</span>
+ <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+ <span class="nd">@Enumerated</span><span class="o">(</span><span class="nc">EnumType</span><span class="o">.</span><span class="na">STRING</span><span class="o">)</span>
+ <span class="kd">private</span> <span class="nc">RoleType</span> <span class="n">roleType</span><span class="o">;</span>
+ <span class="nd">@Temporal</span><span class="o">(</span><span class="nc">TemporalType</span><span class="o">.</span><span class="na">TIMESTAMP</span><span class="o">)</span>
+ <span class="kd">private</span> <span class="nc">Date</span> <span class="n">createdDate</span><span class="o">;</span>
+ <span class="nd">@Temporal</span><span class="o">(</span><span class="nc">TemporalType</span><span class="o">.</span><span class="na">TIMESTAMP</span><span class="o">)</span>
+ <span class="kd">private</span> <span class="nc">Date</span> <span class="n">lastModifiedDate</span><span class="o">;</span>
+ <span class="nd">@Lob</span>
+ <span class="kd">private</span> <span class="nc">String</span> <span class="n">description</span><span class="o">;</span>
+ <span class="c1">//Getter, Setter…</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="column-속성">@Column 속성</h3>
+
+<ul>
+  <li>insertable/updatable = false : JPA로 칼럼 등록/변경 불가</li>
+  <li>nullable = false : not null 제약 조건</li>
+  <li>unique : 유니크 제약 조건을 걸때</li>
+  <li>columnDefinition : DDL 정의를 직접 쓸 수 있음</li>
+  <li>percision, scale : Bigdemical 타입에서 사용</li>
+</ul>
+
+<h3 id="enumerated">@Enumerated</h3>
+
+<ul>
+  <li>ORDINAL : enum 순서를 데이터베이스에 저장(0,1,2,3,,,,)</li>
+  <li>STRING : enum 이름을 데이터베이스에 저장</li>
+</ul>
+
+<p><strong>주의</strong></p>
+
+<p><strong>ORDINAL은 사용하지 않는다.</strong></p>
+
+<ul>
+  <li>데이터 타입이 추가될 경우 구분되지 않고 들어간다.
+    <ul>
+      <li>a(0),b(1) 타입이 있을 때, c 가 추가될 경우 c 가 0으로 구분됨</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="temporal">@Temporal</h3>
+
+<ul>
+  <li>날짜 타입(java.util.Date, java.util.Calender) 를 매핑할 때 사용</li>
+  <li>LocalDate, LocalDateTime 을 사용할 때는 생략 가능(하이버네이트 최신 버전)</li>
+</ul>
+
+<h3 id="lob">@Lob</h3>
+
+<ul>
+  <li>
+    <p>💡 LOB = Loarge Object</p>
+
+    <ul>
+      <li>CLOB : 사이즈가 큰 데이터를 외부 파일로 저장하기 위한 데이터 타입.
+        <ul>
+          <li>문자형 대용량 파일 저장하는데 유용하고 가변 길이로 잘겨서 저장된다.</li>
+        </ul>
+      </li>
+      <li>BLOB : 바이너리 데이터를 DB 외부에 저장하기 위한 데이터 타입
+        <ul>
+          <li>컴퓨터가 인식하는 모든 파일(이진 데이터)을 저장하는 타입</li>
+        </ul>
+      </li>
+      <li><a href="https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&amp;blogId=rlasksdud53&amp;logNo=220595010315">참고</a></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">@Lob</code> 에는 지정할 수 있는 속성이 없다.</li>
+  <li>매핑하는 필드 타입이 문자면 CLOB에 매핑, 나머지는 BLOB에 매핑
+    <ul>
+      <li>CLOB : String, char[], java.sql.CLOB</li>
+      <li>BLOB : byte[], java.sql.BLOB</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="transient">@Transient</h3>
+
+<ul>
+  <li>필드 매핑을 하지 않은</li>
+  <li>데이터베이스에 저장/조회 되지 않음</li>
+  <li>주로 메모리상에서만 임시로 어떤 값을 보관하고 싶을 때 사용한다.
+    <ul>
+      <li>private Integer temp</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="기본키-매핑">기본키 매핑</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@Id</code> : 직접할당</li>
+  <li><code class="language-plaintext highlighter-rouge">@GeneratedValue</code> : 자동 생성
+    <ul>
+      <li>전략(유형?)
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">IDENTITY</code> , 데이터베이스에 위임(주로 MySQL)</li>
+          <li><code class="language-plaintext highlighter-rouge">SEQUENCE</code>, 데이터베이스 시퀀스 오브젝트 사용( 주로 Oracle)
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">@SequenceGenerator</code> 필요</li>
+            </ul>
+          </li>
+          <li><code class="language-plaintext highlighter-rouge">TABLE</code>, 키 생성용 테이블, 모든 DB에서 사용
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">@TableGenerator</code> 필요</li>
+            </ul>
+          </li>
+          <li><code class="language-plaintext highlighter-rouge">AUTO</code>, 방언에 따라 자동 지정, 기본값</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="genetatedvalue">@GenetatedValue</h3>
+
+<h3 id="strategy별-특징">Strategy별 특징</h3>
+
+<ul>
+  <li>IDENTITY
+    <ul>
+      <li>기본 키 생성을 데이터베이스에 위임</li>
+      <li>주로 <strong>MySQL</strong>, PostgreSQL, SQL Server, DB2에서 사용</li>
+      <li>MySQL - auto_increment</li>
+      <li>JPA는 보통 트랜잭션 커밋 시점에 INSERT SQL 실행</li>
+      <li><strong>AUTO_ INCREMENT는 데이터베이스에 INSERT SQL을 실행한 이후에 ID 값을 알 수 있음</strong></li>
+      <li>IDENTITY 전략은 em.persist() 시점에 즉시 INSERT SQL 실행하고 DB에서 식별자를 조회<br />
+⇒ db에 들어가야 id 값을 알 수 있는데 JPA에서 영속성 컨텍스트를 다루기 위해서는 PK가 필요하다. <strong>identity 전략을 사용하면 persist를 실행하는 시점에 바로 insert 쿼리를 db에 적용한다.</strong> (db에는 저장될 것이고 JPA이 값을 가져와서 저장하고 있을 거임)</li>
+    </ul>
+  </li>
+  <li>
+    <p>SEQUNCE</p>
+
+    <ul>
+      <li>데이터베이스 시퀀스는 유일한 값을 순서대로 생성하는 특별한 데이터베이스 오브젝트(Oracle 시퀀스)</li>
+      <li><strong>오라클</strong>, PostgreSQL, DB2, H2 데이터베이스에서 사용</li>
+      <li>
+        <p>sequence 전략을 사용한다고 하면 db에서 next value 값을 가져온다. ( insert 쿼리를 날리지 않아도 키값을 알 수 있음)<br />
+❓ 그래도 계속해서 DB에 접속하는 네트워크가 발생하는데 그럼 성능에 문제가 생기지 않을까??</p>
+
+        <p>⇒ allocationSize 사용(성능 최적화)</p>
+
+        <ul>
+          <li>미리 50 size의 데이터를 setting 하고 사용한다.</li>
+          <li>시작 인덱스에서 50개씩 쓴다고 하면
+            <ul>
+              <li>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>처음 호출시 DB SEQ = 1</td>
+                      <td>1 ⇒ DB 호출</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>다음 호출 시 DB SEQ = 51</td>
+                      <td>2 ⇒ Memory 호출</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>DB SEQ = 51</td>
+                      <td>3 ⇒ Memory 호출</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li><strong>51이 되면 자동으로 next value 호출해서 또 다시 메모리에 50만큼 확보해 놓는다.</strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Table
+    <ul>
+      <li>키 생성 전용 테이블을 하나 만들어서 데이터베이스 시퀀스를 흉내내는 전략</li>
+      <li>장점 : 모든 데이터베이스에 적용 가능</li>
+      <li>단점 : 성능</li>
+      <li>시퀀스를 정의하면 시퀀스 테이블을 생성한다 ? @Table에 어떤시퀀스를 쓸지 지정한다
+        <ul>
+          <li>시퀀스 table에는 시퀀스 이름과 마지막 value 가 들어있다.</li>
+        </ul>
+      </li>
+      <li>하지만 운영에서는 잘 사용하지 않는다. 주로 DB에서 제공하는 걸로 사용.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="권장하는-식별자-전략">권장하는 식별자 전략</h2>
+
+<ul>
+  <li>기본키 제약 조전 : null 아님, 유일, <strong>변하면 안된다.</strong></li>
+  <li>미래까지 이 조건을 만족하는 자연키는 찾기 어렵다. <strong>대체키(비즈니스와 상관없는)를 만들어서 사용하자 !</strong><br />
+<code class="language-plaintext highlighter-rouge">실제 현업에서 기본키를 다룰 때는 비즈니스 데이터를 사용하는 것을 지양한다는 점이 흥미롭다.</code></li>
+  <li>
+    <p>권장 : Long형 + 대체키 + 키 생성 전략</p>
+  </li>
+  <li>spring boot 와 h2 데이터베이스를 사용하게 되면 orderPrice 를 order_price로 바꿔서 적용함</li>
+</ul>
+
+<p>데이터 중심 설계의 문제</p>
+
+<ul>
+  <li>현재 방식은 객체 설계를 테이블 설계에 맞춘 방식</li>
+  <li>테이블의 외래키를 객체에 그대로 가져옴</li>
+  <li>객체 그래프 탐색이 불가능</li>
+  <li>참조가 없으므로 UML도 잘못됨</li>
+</ul>
+
+<p><br />
+<br /></p>
+<hr />
+
+<p><br />
+<br /></p>
+
+<blockquote>
+  <p>참고<br />
+<a href="https://www.inflearn.com/course/ORM-JPA-Basic/dashboard">자바 ORM 표준 JPA 프로그래밍 - 기본편(김영한 님)</a></p>
+</blockquote>
+:ET
