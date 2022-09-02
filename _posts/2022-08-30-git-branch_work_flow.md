@@ -58,10 +58,6 @@ tags: [Git]
 
 - 1개의 master 브랜치만 유지한다.
 - master가 곧 제품이 릴리즈 되는 가장 최신 버전의 브랜치이다.
-- master를 기반으로 별도 브랜치를 생성하여 기능 개발을 진행한다.
-- 브랜치는 로컬에서 commit 하고 정기적으로 원격 브랜치에 push 한다.
-- 코드 병합 준비가 되었다면 pulll request를 만든다.
-- 코드 검토 후 master에 merge 한다.
 - master는 언제든지 배포가 가능하다.
 
 **Github flow 과정**
